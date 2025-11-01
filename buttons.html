@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+    <body> 
+        <title>buton gaem</title>
+            <style>
+             body { background-color: rgb(255, 255, 255); font-family: Arial; text-align: center; margin-top: 50px; overflow: hidden; }
+    </style>
+    <style>
+  /* Apply your cursor to literally everything */
+  html, body, * {
+    cursor: url('cursor.png') 6 4, auto !important;
+  }
+
+  /* Optional: use a different cursor when pressing down (click effect) */
+  body.mouse-down, *:active {
+    cursor: url('pointer.png') 6 4, auto !important;
+  }
+</style>
+</body>
+<body>
+    <h1>buttons of wisdom under me</h1>
+    <button id="dontClickBtn" style="color:black;">DONT CLICK ME</button>
+    <button><a href="homepage.html">homepage</a></button>
+    
+    
+    <script>
+        // when you click the DONT CLICK ME button, it will put a mp4 file covering the screen whole.
+        document.getElementById("dontClickBtn").addEventListener("click", function() {
+            var video = document.createElement("video");
+            video.src = "hahaloser.mp4"; // replace with your video file
+            video.style.position = "fixed";
+            video.style.top = "0";
+            video.style.left = "0";
+            video.style.width = "100%";
+            video.style.height = "100%";
+            video.style.zIndex = "9999";
+            video.autoplay = true;
+            video.loop = true;
+            document.body.appendChild(video);
+        });
+        // during that time, it turns the backround to black
+        document.getElementById("dontClickBtn").addEventListener("click", function() {
+            document.body.style.backgroundColor = "black";
+        });
+        // adds text to the bottom that says: "loser get rickrolled"
+        document.getElementById("dontClickBtn").addEventListener("click", function() {
+            var text = document.createElement("div");
+            text.innerHTML = "wow.";
+            text.style.position = "fixed";
+            text.style.bottom = "10px";
+            text.style.width = "100%";
+            text.style.textAlign = "center";
+            text.style.color = "white";
+            text.style.fontSize = "24px";
+            text.style.zIndex = "10000";
+            document.body.appendChild(text);
+        });
+        </script>
+            <script>
+  // Adds and removes a "mouse-down" class when you click
+  document.addEventListener('mousedown', () => {
+    document.body.classList.add('mouse-down');
+  });
+  document.addEventListener('mouseup', () => {
+    document.body.classList.remove('mouse-down');
+  });
+</script>
+</body>

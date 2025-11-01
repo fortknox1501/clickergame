@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+    <body>
+
+    <title>Homepage!</title>
+    <link rel="icon" type="image/png" href="smile.png">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+            <style>
+             body { background-color: rgb(0, 255, 0); font-family: Arial; text-align: center; margin-top: 50px; overflow: hidden; }
+    </style>
+      <style>
+  /* Apply your cursor to literally everything */
+  html, body, * {
+    cursor: url('cursor.png') 6 4, auto !important;
+  }
+
+  /* Optional: use a different cursor when pressing down (click effect) */
+  body.mouse-down, *:active {
+    cursor: url('pointer.png') 6 4, auto !important;
+  }
+</style>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        a {
+            color: #00b7ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+         <script>
+        // Create the audio element
+        const music = new Audio("Elevator Music.mp3"); // replace with your file
+        music.loop = true; // keeps playing in a loop
+
+        let musicStarted = false;
+
+        // Function to start music on first click
+        function startMusic() {
+            if (!musicStarted) {
+                music.play();
+                musicStarted = true;
+                console.log("Music started!");
+            }
+        }
+
+        // Listen for the first click anywhere on the page
+        document.addEventListener("click", startMusic, { once: true });
+        // (once:true makes sure it only runs once)
+    </script>
+        <script>
+  // Adds and removes a "mouse-down" class when you click
+  document.addEventListener('mousedown', () => {
+    document.body.classList.add('mouse-down');
+  });
+  document.addEventListener('mouseup', () => {
+    document.body.classList.remove('mouse-down');
+  });
+</script>
+</head>
+<body>
+    <h1><strong>Homepage for clicker game!</strong></h1>
+    <p>This is the homepage for my games! enjoy them all!</p>
+    <p><a href="clickergame.html"> the Clicker game</a></p>
+    <p><a href="buttons.html">Buttons!</a></p>
+</body>
+</html>
