@@ -3,7 +3,63 @@
     <title>JAVASNIPPETS</title>
   </head>
   <body>
-    <p>javascript:(function(){var destination = prompt("Destination (Don't include http/https: ");window.location='https://translate.google.com/translate?sl=auto&tl=en&u='+'https://'+destination})();</p>
-    <p>javascript:(()=>{let e='[1,2]';function t(e){return e.toString(16).padStart(2,'0')}function o(e){let o=new Uint8Array((e||40)/2);return window.crypto.getRandomValues(o),Array.from(o,t).join('')}let n=o(20);function r(e,t){return prompt('[Legend7269s proxy]\n'+e,t)}function a(e){return confirm('[Legend7269s proxy]\n'+e)}function l(e){return alert('[92dev proxy]\n'+e)}function c(){let e=r('Enter the URL to access:');return null===e||''===e.trim()?null:e=new URL((e=e.replace(%27-%27,%27%27)).indexOf(%27http%27)?%27http://%27+e:e)}function i(e,t){fetch(%27https://dev.92spoons.com/api/fakehacks/proxy/collect.php%27,{method:%27POST%27,headers:{%27Content-Type%27:%27application/json%27},body:JSON.stringify({url:e,version:%271.0.0%27,from:window.location.href,sessionRandomId:n,proxy:t}),mode:%27cors%27})}!function t(){let o=c();if(null===o)return;let n=new URL(o);!function t(){let l=r(%27Proxy method to use:\nCurrently available proxies are numbered %27+e+%27.%27,1);null!==l&&(1==l?(i(o,1),window.location.href=%27https://webcache.googleusercontent.com/search?q=cache%3A%27+encodeURIComponent(n)):2==l?(i(o,2),window.location.href=%27https://%27+n.hostname.replace(/\./g,%27-%27)+%27.translate.goog%27+n.pathname+%27?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp%27):(i(o,%27oob%27),a(%27That proxy id is invalid. Please choose a proxy in the range %27+e+%27.\nIf none of the proxies are working for you, you can ask for more at https://github.com/Legend7269/Bookmarklets%27)&&t()))}()}()})();</p>
-    <p>javascript:(function()%7Bvar num%3Dprompt("How Times Do You Want This Page To Show Up In your History%3F")%3Bdone%3Dfalse%3Bx%3Dwindow.location.href%3Bfor (var i%3D1%3B i<%3Dnum%3B i%2B%2B)%7Bhistory.pushState(0%2C 0%2C i%3D%3Dnum%3Fx%3Ai.toString())%3Bif(i%3D%3Dnum)%7Bdone%3Dtrue%7D%7Dif(done%3D%3D%3Dtrue)%7Balert("History Flooding Successful!%5Cn "%2Bwindow.location.href%2B" %5CnNow Appears In Your History "%2Bnum%2B(num%3D%3D1%3F" time."%3A" Times. %5CnMade By%3A Utopia"))%7D%7D)()%3B</p>
+    <h1>FORCE-INSPECT</h1>
+    <p>javascript:var firebug=document.createElement('script');firebug.setAttribute('src','https://luphoria.com/fbl/fbl/firebug-lite-debug.js');document.body.appendChild(firebug);(function(){if(window.firebug.version){firebug.init();}else{setTimeout(arguments.callee);}})();void(firebug);</p>
+    <h1>PASSWORDLOOKER</h1>
+    <p>javascript:Array.prototype.slice.call(document.querySelectorAll("input[type='password']")).map(function(el){el.setAttribute('type','text')})</p>
+    <h1>FAKE-UPDATE</h1>
+    <p>javascript:(function() {
+    var overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "#FFFFFF";
+    overlay.style.opacity = "0.95";
+    overlay.style.zIndex = "9999999";
+
+    var dialog = document.createElement("div");
+    dialog.style.position = "absolute";
+    dialog.style.top = "50%";
+    dialog.style.left = "50%";
+    dialog.style.transform = "translate(-50%, -50%)";
+    dialog.style.width = "450px";
+    dialog.style.padding = "20px";
+    dialog.style.background = "#FFFFFF";
+    dialog.style.border = "1px solid #333333";
+    dialog.style.borderRadius = "5px";
+    dialog.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
+    dialog.style.zIndex = "99999999";
+
+    var title = document.createElement("h1");
+    title.innerHTML = "Google Chrome Update";
+    title.style.marginTop = "0";
+    title.style.textAlign = "center";
+    dialog.appendChild(title);
+
+    var message = document.createElement("p");
+    message.innerHTML = "Your version of Google Chrome is outdated. Please click the button below to update now.";
+    message.style.margin = "20px 0";
+    message.style.textAlign = "center";
+    dialog.appendChild(message);
+
+    var button = document.createElement("button");
+    button.innerHTML = "Update Now";
+    button.style.background = "#0078D7";
+    button.style.border = "none";
+    button.style.color = "#FFFFFF";
+    button.style.padding = "10px 20px";
+    button.style.borderRadius = "5px";
+    button.style.cursor = "pointer";
+    button.addEventListener("click", function() {
+        window.location.href = "https://google.com/chrome";
+    });
+    dialog.appendChild(button);
+
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+})();</p>
+    <h1>AUTOCLICKER</h1>
+    <p>javascript:(function(x,y){if(!window.click){window.click=!0,document.body.style.cursor='crosshair';var cps=prompt('Autoclicker CPS: (Under 200 recommended)');if(!cps||isNaN(cps)?(alert(%27You entered something wrong. Try running the script again.%27),end()):alert(%27Autoclicker activated at %27+cps+%27 CPS! Do [ctrl+e] to stop.%27),addEventListener(%27mousemove%27,e=>{x=e.clientX,y=e.clientY}),addEventListener(%27keydown%27,e=>{%27e%27===e.key&&e.ctrlKey&&(alert(%27Autoclicker deactivated! Click the bookmark again to reactivate!%27),end())}),window.click)var int=setInterval(function(){var e=document.elementFromPoint(x,y);e&&e.click()},1e3/cps);function end(){clearInterval(int),window.click=!1,document.body.style.cursor=%27default%27}}})();</p>
   </body>
