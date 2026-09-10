@@ -97,27 +97,45 @@
     </div>
     <div id="shopButtons" style="display:none; position:absolute; right:50px; top:100px; flex-direction:column; z-index:20;">
         <button id="item1Btn" style="display:block; margin-bottom:8px;">1 CPS (10 clicks)</button>
-        <button id="item2Btn" style="display:block; margin-bottom:8px;">5 CPS (50 clicks)</button> 
-        <button id="item3Btn" style="display:block; margin-bottom:8px;">10 CPS (100 clicks)</button> 
-        <button id="item4Btn" style="display:block; margin-bottom:8px;">50 CPS (500 clicks)</button> 
+        <button id="item2Btn" style="display:block; margin-bottom:8px;">5 CPS (50 clicks)</button>
+        <button id="item3Btn" style="display:block; margin-bottom:8px;">10 CPS (100 clicks)</button>
+        <button id="item4Btn" style="display:block; margin-bottom:8px;">50 CPS (500 clicks)</button>
         <button id="item5Btn" style="display:block; margin-bottom:8px;">100 CPS (1000 clicks)</button>
-        <button id="item6Btn" style="display:block; margin-bottom:8px;">1000 CPS (10000 clicks)</button>
-        <button id="item7Btn" style="display:block; margin-bottom:8px;">10000 CPS (100000 clicks)</button>
-        <button id="item8Btn" style="display:block; margin-bottom:8px;">100000 CPS (1000000 clicks)</button>
-        <button id="item9Btn" style="display:block; margin-bottom:8px;">1000000 CPS (10000000 clicks)</button>
+        <button id="item6Btn" style="display:block; margin-bottom:8px;">500 CPS (5000 clicks)</button>
+        <button id="item7Btn" style="display:block; margin-bottom:8px;">1000 CPS (10000 clicks)</button>
+        <button id="item8Btn" style="display:block; margin-bottom:8px;">5000 CPS (50000 clicks)</button>
+        <button id="item9Btn" style="display:block; margin-bottom:8px;">10000 CPS (100000 clicks)</button>
+        <button id="item10Btn" style="display:block; margin-bottom:8px;">50000 CPS (500000 clicks)</button>
+        <button id="item11Btn" style="display:block; margin-bottom:8px;">100000 CPS (1000000 clicks)</button>
+        <button id="item12Btn" style="display:block; margin-bottom:8px;">500000 CPS (5000000 clicks)</button>
+        <button id="item13Btn" style="display:block; margin-bottom:8px;">1000000 CPS (10000000 clicks)</button>
+        <button id="item14Btn" style="display:block; margin-bottom:8px;">5000000 CPS (50000000 clicks)</button>
+        <button id="item15Btn" style="display:block; margin-bottom:8px;">10000000 CPS (100000000 clicks)</button>
+        <button id="item16Btn" style="display:block; margin-bottom:8px;">50000000 CPS (500000000 clicks)</button>
+        <button id="item17Btn" style="display:block; margin-bottom:8px;">100000000 CPS (1000000000 clicks)</button>
+        <button id="item18Btn" style="display:block; margin-bottom:8px;">500000000 CPS (5000000000 clicks)</button>
+        <button id="item19Btn" style="display:block; margin-bottom:8px;">1000000000 CPS (10000000000 clicks)</button>
         
           <select id="autoSelect"> 
-            <option id="item0auto">1 CPS</option> 
-            <option id="item1auto">5 CPS</option> 
+            <option id="item0auto">1 CPS</option>
+            <option id="item1auto">5 CPS</option>
             <option id="item2auto">10 CPS</option>
             <option id="item3auto">50 CPS</option>
             <option id="item4auto">100 CPS</option>
-            <option id="item5auto">500 CPS</option> 
+            <option id="item5auto">500 CPS</option>
             <option id="item6auto">1000 CPS</option>
-            <option id="item7auto">10000 CPS</option>
-            <option id="item8auto">100000 CPS</option>
-            <option id="item9auto">1000000 CPS</option> 
-            <option id="item10auto">10000000 CPS</option>
+            <option id="item7auto">5000 CPS</option>
+            <option id="item8auto">10000 CPS</option>
+            <option id="item9auto">50000 CPS</option>
+            <option id="item10auto">100000 CPS</option>
+            <option id="item11auto">500000 CPS</option>
+            <option id="item12auto">1000000 CPS</option>
+            <option id="item13auto">5000000 CPS</option>
+            <option id="item14auto">10000000 CPS</option>
+            <option id="item15auto">50000000 CPS</option>
+            <option id="item16auto">100000000 CPS</option>
+            <option id="item17auto">500000000 CPS</option>
+            <option id="item18auto">1000000000 CPS</option>
         </select> <button id="autoBuyBTN">buy</button>
         <button id="rebirthBtn" style="display:block;">rebirth</button>
     </div>
@@ -133,16 +151,22 @@
         let cps = 0;
         let cpsInterval = null;
         let highestScore = 0;
+        let clickMultiplier = 1;
+        let rebirths = 0;
 
         // Load/save
         function loadData() {
             const savedScore = localStorage.getItem('score');
             const savedCps = localStorage.getItem('cps');
             const savedHighest = localStorage.getItem('highestScore');
+            const savedMultiplier = localStorage.getItem('clickMultiplier');
+            const savedRebirths = localStorage.getItem('rebirths');
 
             score = savedScore ? parseInt(savedScore) : 0;
             cps = savedCps ? parseInt(savedCps) : 0;
             highestScore = savedHighest ? parseInt(savedHighest) : 0;
+            clickMultiplier = savedMultiplier ? parseInt(savedMultiplier) : 1;
+            rebirths = savedRebirths ? parseInt(savedRebirths) : 0;
 
             updateHighestScoreDisplay();
         }
@@ -151,6 +175,8 @@
             localStorage.setItem('score', score);
             localStorage.setItem('cps', cps);
             localStorage.setItem('highestScore', highestScore);
+            localStorage.setItem('clickMultiplier', clickMultiplier);
+            localStorage.setItem('rebirths', rebirths);
         }
 
         function updateHighestScoreDisplay() {
@@ -208,21 +234,53 @@
             shopButtons.style.display = shopButtons.style.display === 'none' ? 'block' : 'none';
         });
 
-        item1Btn.addEventListener('click', () => { if (score >= 10) { score -= 10; cps += 1; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item2Btn.addEventListener('click', () => { if (score >= 50) { score -= 50; cps += 5; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item3Btn.addEventListener('click', () => { if (score >= 100) { score -= 100; cps += 10; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item4Btn.addEventListener('click', () => { if (score >= 500) { score -= 500; cps += 50; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item5Btn.addEventListener('click', () => { if (score >= 1000) { score -= 1000; cps += 100; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item6Btn.addEventListener('click', () => { if (score >= 10000) { score -= 10000; cps += 1000; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item7Btn.addEventListener('click', () => { if (score >= 100000) { score -= 100000; cps += 10000; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item8Btn.addEventListener('click', () => { if (score >= 1000000) { score -= 1000000; cps += 100000; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        item9Btn.addEventListener('click', () => { if (score >= 10000000) { score -= 10000000; cps += 1000000; updateCPS(); scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); } });
-        rebirthBtn.addEventListener('click', () => { score = 0; cps = 0; scoreDisplay.textContent = 'clicks: ' + score; updateCPS(); saveData(); });
-        clickBtn.addEventListener('click', () => { score++; scoreDisplay.textContent = 'clicks: ' + score; checkHighestScore(); saveData(); });
+        const shopButtonElements = [
+            item1Btn, item2Btn, item3Btn, item4Btn, item5Btn, item6Btn,
+            item7Btn, item8Btn, item9Btn,
+            document.getElementById('item10Btn'), document.getElementById('item11Btn'),
+            document.getElementById('item12Btn'), document.getElementById('item13Btn'),
+            document.getElementById('item14Btn'), document.getElementById('item15Btn'),
+            document.getElementById('item16Btn'), document.getElementById('item17Btn'),
+            document.getElementById('item18Btn'), document.getElementById('item19Btn')
+        ];
+
+        shopButtonElements.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const item = shopItems[index];
+                if (score >= item.cost) {
+                    score -= item.cost;
+                    cps += item.gain;
+                    updateCPS();
+                    scoreDisplay.textContent = 'clicks: ' + score;
+                    checkHighestScore();
+                    saveData();
+                }
+            });
+        });
+        rebirthBtn.textContent = 'rebirth (10000 clicks)';
+        rebirthBtn.addEventListener('click', () => {
+            if (score >= 10000) {
+                score = 0;
+                cps = 0;
+                clickMultiplier *= 2;
+                rebirths++;
+                scoreDisplay.textContent = 'clicks: ' + score;
+                updateCPS();
+                saveData();
+                rebirthBtn.textContent = 'rebirth (10000 clicks) - ' + clickMultiplier + 'x clicks';
+            }
+        });
+        clickBtn.addEventListener('click', () => {
+            score += clickMultiplier;
+            scoreDisplay.textContent = 'clicks: ' + score;
+            checkHighestScore();
+            saveData();
+        });
 
         loadData();
         scoreDisplay.textContent = 'clicks: ' + score;
         updateCPS();
+        rebirthBtn.textContent = 'rebirth (10000 clicks) - ' + clickMultiplier + 'x clicks';
 
         // Random button color
         function getRandomColor() { return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); }
@@ -367,9 +425,7 @@
 let autoBuyerRunning = false;
 let autoBuyerInterval = null;
 
-// Match your existing game variables (adjust if different)
-let score = window.score || 0;
-let cps = window.cps || 0;
+// Use the main game's existing score and cps variables.
 
 // Grab elements
 const autoSelect = document.getElementById('autoSelect');
@@ -377,24 +433,31 @@ const autoBuyBTN = document.getElementById('autoBuyBTN');
 
 // Define cost and cps gain for each shop item
 const shopItems = [
-  { cost: 10, gain: 1 },        // 1 CPS
-  { cost: 50, gain: 5 },        // 5 CPS
-  { cost: 100, gain: 10 },      // 10 CPS
-  { cost: 500, gain: 50 },      // 50 CPS
-  { cost: 1000, gain: 100 },    // 100 CPS
-  { cost: 10000, gain: 500 },   // 500 CPS
-  { cost: 100000, gain: 1000 }, // 1000 CPS
-  { cost: 1000000, gain: 10000 }, // 10000 CPS
-  { cost: 10000000, gain: 100000 }, // 100000 CPS
-  { cost: 100000000, gain: 1000000 } // 1000000 CPS
+  { cost: 10, gain: 1 },
+  { cost: 50, gain: 5 },
+  { cost: 100, gain: 10 },
+  { cost: 500, gain: 50 },
+  { cost: 1000, gain: 100 },
+  { cost: 5000, gain: 500 },
+  { cost: 10000, gain: 1000 },
+  { cost: 50000, gain: 5000 },
+  { cost: 100000, gain: 10000 },
+  { cost: 500000, gain: 50000 },
+  { cost: 1000000, gain: 100000 },
+  { cost: 5000000, gain: 500000 },
+  { cost: 10000000, gain: 1000000 },
+  { cost: 50000000, gain: 5000000 },
+  { cost: 100000000, gain: 10000000 },
+  { cost: 500000000, gain: 50000000 },
+  { cost: 1000000000, gain: 100000000 },
+  { cost: 5000000000, gain: 500000000 },
+  { cost: 10000000000, gain: 1000000000 }
 ];
 
 // Helper to update score display and cps (adjust to your functions if named differently)
 function updateDisplay() {
-  const scoreDisplay = document.getElementById('scoreDisplay');
-  const cpsDisplay = document.getElementById('cpsDisplay');
-  if (scoreDisplay) scoreDisplay.textContent = `Clicks: ${score}`;
-  if (cpsDisplay) cpsDisplay.textContent = `CPS: ${cps}`;
+  const display = document.getElementById('score');
+  if (display) display.textContent = 'clicks: ' + score;
 }
 
 autoBuyBTN.addEventListener('click', () => {
@@ -419,8 +482,10 @@ autoBuyBTN.addEventListener('click', () => {
     if (score >= selectedItem.cost) {
       score -= selectedItem.cost;
       cps += selectedItem.gain;
-      updateDisplay();
-      if (typeof saveData === 'function') saveData(); // optional if you have a save system
+      updateCPS();
+      scoreDisplay.textContent = 'clicks: ' + score;
+      checkHighestScore();
+      saveData();
     }
   }, 1000);
 });
