@@ -47,6 +47,13 @@
      cursor: url('pointer.png') 6 4, auto !important;
     }
 
+
+        #shredderGuy.shredding { animation: shredderChomp .13s infinite alternate; }
+        @keyframes shredderChomp { from { transform: rotate(-8deg) scale(1); } to { transform: rotate(8deg) scale(1.12); } }
+        #brightnessOverlay { position:fixed; inset:0; background:black; opacity:0; pointer-events:none; z-index:10; }
+        #settingsPanel { display:none; position:fixed; top:52px; left:10px; z-index:100; flex-direction:column; gap:10px; min-width:240px; padding:14px; background:rgba(255,215,0,.96); color:black; border:2px solid black; border-radius:6px; text-align:left; box-shadow:2px 3px 8px rgba(0,0,0,.35); }
+        #settingsPanel button, #settingsPanel input { cursor:pointer; }
+        #settingsPanel button { padding:7px; background:#f2f2f2; color:black; border:1px solid #555; }
     </style>
      <script>
         // Create the audio element
@@ -80,6 +87,25 @@
     <div id="score">clicks: 0</div>
     <button id="clickBtn" style="color:black;">click for clicks</button>
     <button id="shopBtn" style="position:relative; z-index:20; color: rgb(0, 0, 0); background-color: gold;">shop</button>
+    <button id="gearsBtn" style="position:relative; z-index:20; color: rgb(0, 0, 0); background-color: gold;">gears ⚙</button>
+    <button id="settingsBtn" style="position:fixed; top:10px; left:10px; z-index:101; color:black; background-color:gold;">settings</button>
+    <div id="settingsPanel">
+      <strong>settings</strong>
+      <label for="brightnessControl">brightness</label>
+      <input id="brightnessControl" type="range" min="20" max="100" value="100" style="width:100%;">
+      <label for="backgroundColorControl">background color</label>
+      <input id="backgroundColorControl" type="color" value="#00ff00" style="width:100%; height:34px;">
+      <button id="resetProgressBtn" type="button">reset all progress</button>
+      <small>Reset removes saved clicks, upgrades, and rebirths.</small>
+    </div>
+    <div id="brightnessOverlay"></div>
+
+    <div id="gearsPanel" style="display:none; position:absolute; right:50px; top:100px; flex-direction:column; z-index:20;">
+      <strong style="display:block; margin-bottom:8px; color:black;">gears</strong>
+      <button id="shredderBuyBtn" style="display:block; margin-bottom:8px;">Shred the orange cube (1,000,000 clicks)</button>
+      <div id="shredderStatus" style="color:black; background:rgba(255,255,255,0.8); padding:5px;">Buy the little shredder!</div>
+    </div>
+    <div id="shredderGuy" aria-label="little shredder" style="display:none; position:fixed; right:22px; bottom:18px; z-index:25; font-size:42px; line-height:1; filter:drop-shadow(2px 2px 0 #333);">🤖<div id="shredderTeeth" style="font-size:22px; margin-top:-5px;">⚙️</div></div>
     <button id="gotoinfoBTN" style="position:fixed; top:10px; right:10px; z-index:20; color: rgb(0, 0, 0); background-color: lightgrey;" onclick="window.location.href='homepage.html'">homepage</button>
 
     <!-- Highest Score Display -->
@@ -358,7 +384,7 @@
                 lineWidth: 3
             }
         });
-        World.add(world, box);
+        World.add(world, box);\n        const extraBlocks = [];\n        const interactiveBlocks = [box];
 
         const canvas = render.canvas;
 
@@ -394,11 +420,12 @@
 
         render.canvas.addEventListener("mousedown", e => {
             const mousePos = { x: e.clientX, y: e.clientY };
-            if (isInsideBox(mousePos, box)) {
+            const targetBlock = interactiveBlocks.find(body => body && body.parent === body && isInsideBox(mousePos, body));
+            if (targetBlock) {
                 hingeConstraint = Constraint.create({
                     pointA: mousePos,
-                    bodyB: box,
-                    pointB: { x: mousePos.x - box.position.x, y: mousePos.y - box.position.y },
+                    bodyB: targetBlock,
+                    pointB: { x: mousePos.x - targetBlock.position.x, y: mousePos.y - targetBlock.position.y },
                     stiffness: 0.9, damping: 0.1
                 });
                 World.add(world, hingeConstraint);
@@ -406,6 +433,80 @@
         });
         render.canvas.addEventListener("mousemove", e => { if (hingeConstraint) hingeConstraint.pointA = { x: e.clientX, y: e.clientY }; });
         render.canvas.addEventListener("mouseup", () => { if (hingeConstraint) { World.remove(world, hingeConstraint); hingeConstraint = null; } });
+    </script>
+    <script>
+      const gearsBtn = document.getElementById('gearsBtn');
+      const gearsPanel = document.getElementById('gearsPanel');
+      const shredderBuyBtn = document.getElementById('shredderBuyBtn');
+      const shredderStatus = document.getElementById('shredderStatus');
+      const shredderGuy = document.getElementById('shredderGuy');
+      let shredderPurchased = false;
+
+      // Settings menu: visual preferences stay separate from game progress.
+      const settingsBtn = document.getElementById('settingsBtn');
+      const settingsPanel = document.getElementById('settingsPanel');
+      const brightnessControl = document.getElementById('brightnessControl');
+      const backgroundColorControl = document.getElementById('backgroundColorControl');
+      const brightnessOverlay = document.getElementById('brightnessOverlay');
+      settingsBtn.addEventListener('click', () => {
+        settingsPanel.style.display = settingsPanel.style.display === 'flex' ? 'none' : 'flex';
+      });
+      brightnessControl.addEventListener('input', () => {
+        brightnessOverlay.style.opacity = String(1 - Number(brightnessControl.value) / 100);
+      });
+      backgroundColorControl.addEventListener('input', () => {
+        document.body.style.backgroundColor = backgroundColorControl.value;
+      });
+      document.getElementById('resetProgressBtn').addEventListener('click', () => {
+        if (!confirm('Reset ALL game progress? This cannot be undone.')) return;
+        ['score', 'cps', 'highestScore', 'clickMultiplier', 'rebirths'].forEach(key => localStorage.removeItem(key));
+        location.reload();
+      });
+      gearsBtn.addEventListener('click', () => {
+        gearsPanel.style.display = gearsPanel.style.display === 'none' ? 'flex' : 'none';
+      });
+      shredderBuyBtn.addEventListener('click', () => {
+        if (shredderPurchased) return;
+        if (score < 1000000) {
+          shredderStatus.textContent = 'You need 1,000,000 clicks first!';
+          return;
+        }
+        score -= 1000000;
+        scoreDisplay.textContent = 'clicks: ' + score;
+        saveData();
+        shredderPurchased = true;
+        shredderBuyBtn.disabled = true;
+        shredderBuyBtn.textContent = 'Shredder purchased!';
+        shredderStatus.textContent = 'Shredding the orange cube...';
+        shredderGuy.style.display = 'block';
+        const targetRight = Math.max(22, window.innerWidth - box.position.x - 35);
+        shredderGuy.style.transition = 'right 1.1s ease-in-out';
+        requestAnimationFrame(() => { shredderGuy.style.right = targetRight + 'px'; });
+        setTimeout(() => {
+          shredderGuy.classList.add('shredding');
+          const x = box.position.x, y = box.position.y;
+          World.remove(world, box);
+          const pieceSize = 9;
+          for (let i = 0; i < 9; i++) {
+            const angle = (Math.PI * 2 * i) / 9;
+            const piece = Bodies.rectangle(x + Math.cos(angle) * 8, y + Math.sin(angle) * 8,
+              pieceSize, pieceSize, {
+                restitution: 0.4, friction: 0.5,
+                render: { fillStyle: 'orange', strokeStyle: 'black', lineWidth: 2 }
+              });
+            extraBlocks.push(piece);
+            interactiveBlocks.push(piece);
+            World.add(world, piece);
+            Matter.Body.setVelocity(piece, { x: Math.cos(angle) * 3, y: Math.sin(angle) * 3 - 2 });
+          }
+          setTimeout(() => {
+            shredderGuy.classList.remove('shredding');
+            shredderGuy.style.transition = 'none';
+            shredderGuy.style.right = '22px';
+            shredderStatus.textContent = 'Cube shredded! The pieces still fall and can be dragged.';
+          }, 850);
+        }, 1150);
+      });
     </script>
     <script>
   // Adds and removes a "mouse-down" class when you click
